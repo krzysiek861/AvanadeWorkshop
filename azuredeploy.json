@@ -1,0 +1,383 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "_artifactsLocation": {
+      "type": "string"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring"
+    },
+    "avanadeAppEnvironment": {
+      "defaultValue": "dev",
+      "metadata": {
+        "description": "Environment name which will be add as prefix to all names by convention."
+      },
+      "minLength": 3,
+      "type": "string"
+    },
+    "principalId": {
+      "defaultValue": "",
+      "metadata": {
+        "description": "GUID that needs to be associate with Azure Key Vault’s objectId."
+      },
+      "minLength": 3,
+      "type": "string"
+    },
+    "sendgridPassword": {
+      "defaultValue": "Password1",
+      "metadata": {
+        "description": "Send Grid Password"
+      },
+      "minLength": 3,
+      "type": "string"
+    }
+  },
+  "variables": {
+    "appInsightsTemplateName": "appInsights.json",
+    "appService": {
+      "name": "[concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-ai')]"
+    },
+    "appServicePlan": {
+      "name": "[concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-serviceplan')]",
+      "skuName": "S1"
+    },
+    "appServicePlanTemplateName": "appServicePlan.json",
+    "appServiceTemplateName": "appService.json",
+    "azureFunctionName": "[concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-function-app')]",
+    "azureFunctionTemplateName": "azureFunction.json",
+    "keyVaultName": "[if(less(length(concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-kv')),24), concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-kv'),substring(concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-kv'),0,if(less(length(concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-kv')),24),length(concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-kv')),23)))]",
+    "keyVaultTemplateName": "keyVault.json",
+    "resourceGroupName": "[resourceGroup().name]",
+    "resourceId": "[resourceGroup().id]",
+    //"scheduler": {
+    //  "name": "[concat(parameters('avanadeAppEnvironment'),'-avanade-jobs')]",
+    //  "jobs": {
+    //    "job1Name": "[concat(parameters('avanadeAppEnvironment'),'-avanade-jobs', '/', 'jobExample1')]",
+    //    "job2Name": "[concat(parameters('avanadeAppEnvironment'),'-avanade-jobs', '/', 'jobExample2')]"
+    //  }
+    //},
+    //"schedulerTemplateName": "scheduler.json",
+    //"schedulerJobTemplateName": "schedulerJob.json",
+    //"sendgridName": "[concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-sendgrid')]",
+    //"sendgridTemplateName": "sendgrid.json",
+    "serviceBus": {
+      "name": "[concat(parameters('avanadeAppEnvironment'),'avanadeworkshopsb')]",
+      "defaultSASKeyName": "RootManageSharedAccessKey",
+      "authorizationRulesName": "[concat(parameters('avanadeAppEnvironment'),'avanadeworkshopsb/RootManageSharedAccessKey')]"
+    },
+    "serviceBusTemplateName": "serviceBus.json",
+    "storage": {
+      "dataName": "[if(less(length(concat(parameters('avanadeAppEnvironment'),'avanadestorage')),24), concat(parameters('avanadeAppEnvironment'),'avanadestorage'),substring(concat(parameters('avanadeAppEnvironment'),'avanadestorage'),0,if(less(length(concat(parameters('avanadeAppEnvironment'),'avanadestorage')),24),length(concat(parameters('avanadeAppEnvironment'),'avanadestorage')),23)))]"
+    },
+    "storageTemplateName": "storage.json"
+  },
+  "resources": [
+    {
+      "apiVersion": "2016-09-01",
+      "name": "appInsightsTemplate",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": {
+          "name": { "value": "[variables('appService').name]" }
+        },
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('appInsightsTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      },
+      "type": "Microsoft.Resources/deployments"
+    },
+    {
+      "apiVersion": "2016-09-01",
+      "name": "appServicePlanTemplate",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": {
+          "appServicePlan": { "value": "[variables('appServicePlan')]" }
+        },
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('appServicePlanTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      },
+      "type": "Microsoft.Resources/deployments"
+    },
+    {
+      "apiVersion": "2016-09-01",
+      "dependsOn": [
+        "appInsightsTemplate",
+        "appServicePlanTemplate",
+        "storageDataTemplate"
+      ],
+      "name": "azureFunctionTemplate",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": {
+          "name": { "value": "[variables('azureFunctionName')]" },
+          "hostingPlanName": { "value": "[variables('appServicePlan').name]" },
+          "storageAccountName": { "value": "[variables('storage').dataName]" },
+          "applicationInsightsName": { "value": "[variables('appService').name]" }
+        },
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('azureFunctionTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      },
+      "type": "Microsoft.Resources/deployments"
+    },
+    {
+      "apiVersion": "2016-09-01",
+      "dependsOn": [
+        "appInsightsTemplate",
+        "appServicePlanTemplate",
+        "serviceBusTemplate",
+        "storageDataTemplate"
+      ],
+      "name": "appServiceTemplate",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": {
+          "appService": { "value": "[variables('appService')]" },
+          "appSettings": {
+            "value": [
+              {
+                "name": "serviceBusScheme",
+                "value": "sb"
+              },
+              {
+                "name": "serviceBusServiceName",
+                "value": "[variables('serviceBus').name]"
+              },
+              {
+                "name": "serviceBusSharedAccessKeyName",
+                "value": "[variables('serviceBus').defaultSASKeyName]"
+              },
+              {
+                "name": "serviceBusSharedAccessKeyValue",
+                "value": "PASTE_RootManageSharedAccessKey_HERE"
+              },
+              {
+                "name": "Azure.ServiceBus.ReThrowInterval",
+                "value": "10"
+              },
+              {
+                "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                "value": "[reference('appInsightsTemplate').outputs.InstrumentationKey.value]"
+              }
+            ]
+          },
+          "connectionStrings": {
+            "value": [
+              {
+                "name": "AzureWebJobsDashboard",
+                "connectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storage').dataName, ';AccountKey=', reference('storageDataTemplate').outputs.accountKey.value)]",
+                "type": 3
+              },
+              {
+                "name": "AzureWebJobsStorage",
+                "connectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storage').dataName, ';AccountKey=', reference('storageDataTemplate').outputs.accountKey.value)]",
+                "type": 3
+              },
+              {
+                "name": "AzureWebJobsServiceBus",
+                "connectionString": "[reference('serviceBusTemplate').outputs.primaryConnectionString.value]",
+                "type": 3
+              }
+            ]
+          },
+          "serverFarmId": { "value": "[reference('appServicePlanTemplate').outputs.appServicePlanId.value]" }
+        },
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('appServiceTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      },
+      "type": "Microsoft.Resources/deployments"
+    },
+    /*   {
+      "apiVersion": "2016-09-01",
+      "name": "schedulerTemplate",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": {
+          "name": { "value": "[variables('scheduler').name]" }
+        },
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('schedulerTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      },
+      "type": "Microsoft.Resources/deployments"
+    },
+    {
+      "apiVersion": "2016-09-01",
+      "dependsOn": [
+        "schedulerTemplate",
+        "serviceBusTemplate"
+      ],
+      "name": "schedulerJobTemplate1",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": {
+          "action": {
+            "value": {
+              "serviceBusQueueMessage": {
+                "queueName": "queue1",
+                "namespace": "[variables('serviceBus').name]",
+                "transportType": "NetMessaging",
+                "authentication": {
+                  "sasKeyName": "[variables('serviceBus').defaultSASKeyName]",
+                  "type": "SharedAccessKey",
+                  "sasKey": "[reference('serviceBusTemplate').outputs.primaryKey.value]"
+                },
+                "message": "queue1",
+                "brokeredMessageProperties": {}
+              },
+              "type": "ServiceBusQueue",
+              "retryPolicy": {
+                "retryType": "None"
+              }
+            }
+          },
+          "name": { "value": "[variables('scheduler').jobs.job1Name]" },
+          "recurrence": {
+            "value": {
+              "frequency": "Hour",
+              "interval": 1
+            }
+          }
+        },
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('schedulerJobTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      },
+      "type": "Microsoft.Resources/deployments"
+    },
+    {
+      "apiVersion": "2016-09-01",
+      "dependsOn": [
+        "schedulerTemplate",
+        "serviceBusTemplate"
+      ],
+      "name": "schedulerJobTemplate2",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": {
+          "action": {
+            "value": {
+              "serviceBusTopicMessage": {
+                "topicPath": "topic1",
+                "namespace": "[variables('serviceBus').name]",
+                "transportType": "NetMessaging",
+                "authentication": {
+                  "sasKeyName": "[variables('serviceBus').defaultSASKeyName]",
+                  "type": "SharedAccessKey",
+                  "sasKey": "[reference('serviceBusTemplate').outputs.primaryKey.value]"
+                },
+                "message": "topic1",
+                "brokeredMessageProperties": {}
+              },
+              "type": "ServiceBusTopic",
+              "retryPolicy": {
+                "retryType": "None"
+              }
+            }
+          },
+          "name": { "value": "[variables('scheduler').jobs.job2Name]" },
+          "recurrence": {
+            "value": {
+              "frequency": "week",
+              "interval": 1,
+              "schedule": {
+                "minutes": [
+                  0
+                ],
+                "hours": [
+                  13,
+                  14,
+                  15,
+                  16
+                ],
+                "weekDays": [
+                  "monday"
+                ]
+              }
+            }
+          }
+        },
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('schedulerJobTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      },
+      "type": "Microsoft.Resources/deployments"
+    },
+*/
+    {
+      "apiVersion": "2016-09-01",
+      "name": "keyVaultTemplateName",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": {
+          "name": { "value": "[variables('keyVaultName')]" },
+          "principalId": { "value": "[parameters('principalId')]" }
+        },
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('keyVaultTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      },
+      "type": "Microsoft.Resources/deployments"
+    },
+/*    {
+      "apiVersion": "2016-09-01",
+      "name": "sendgridTemplateName",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": {
+          "name": { "value": "[variables('sendgridName')]" },
+          "password": { "value": "[parameters('sendgridPassword')]" }
+        },
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('sendgridTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      },
+      "type": "Microsoft.Resources/deployments"
+    },
+*/    {
+      "apiVersion": "2016-09-01",
+      "name": "serviceBusTemplate",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": {
+          "serviceBus": { "value": "[variables('serviceBus')]" }
+        },
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('serviceBusTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      },
+      "type": "Microsoft.Resources/deployments"
+    },
+    {
+      "apiVersion": "2016-09-01",
+      "name": "storageDataTemplate",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": {
+          "name": { "value": "[variables('storage').dataName]" }
+        },
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('storageTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      },
+      "type": "Microsoft.Resources/deployments"
+    }
+  ],
+  "outputs": {
+  }
+}

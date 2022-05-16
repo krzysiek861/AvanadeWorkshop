@@ -1,0 +1,15 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "avanadeAppEnvironment": {
+      "value": "abc"
+    },
+    "principalId": {
+      "value": "7be50f15-7d13-4e1a-a26a-16efe4e903a5"
+    },
+    "sendgridPassword": {
+      "value": "Password1"
+    }
+  }
+}
