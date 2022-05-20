@@ -3,13 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "avanadeAppEnvironment": {
-      "value": "abc"
+      "value": "xyz"
     },
-    "principalId": {
-      "value": "7be50f15-7d13-4e1a-a26a-16efe4e903a5"
-    },
-    "sendgridPassword": {
-      "value": "Password1"
-    }
   }
 }

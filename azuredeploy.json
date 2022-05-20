@@ -23,23 +23,16 @@
       },
       "minLength": 3,
       "type": "string"
-    },
-    "sendgridPassword": {
-      "defaultValue": "Password1",
-      "metadata": {
-        "description": "Send Grid Password"
-      },
-      "minLength": 3,
-      "type": "string"
     }
   },
   "variables": {
+    "appInsightsName": "[concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-app-ai')]",
     "appInsightsTemplateName": "appInsights.json",
     "appService": {
-      "name": "[concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-ai')]"
+      "name": "[concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-app-service')]"
     },
     "appServicePlan": {
-      "name": "[concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-serviceplan')]",
+      "name": "[concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-service-plan')]",
       "skuName": "S1"
     },
     "appServicePlanTemplateName": "appServicePlan.json",
@@ -50,21 +43,12 @@
     "keyVaultTemplateName": "keyVault.json",
     "resourceGroupName": "[resourceGroup().name]",
     "resourceId": "[resourceGroup().id]",
-    //"scheduler": {
-    //  "name": "[concat(parameters('avanadeAppEnvironment'),'-avanade-jobs')]",
-    //  "jobs": {
-    //    "job1Name": "[concat(parameters('avanadeAppEnvironment'),'-avanade-jobs', '/', 'jobExample1')]",
-    //    "job2Name": "[concat(parameters('avanadeAppEnvironment'),'-avanade-jobs', '/', 'jobExample2')]"
-    //  }
-    //},
-    //"schedulerTemplateName": "scheduler.json",
-    //"schedulerJobTemplateName": "schedulerJob.json",
-    //"sendgridName": "[concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-sendgrid')]",
-    //"sendgridTemplateName": "sendgrid.json",
+    "sendgridName": "[concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-sendgrid')]",
+    "sendgridTemplateName": "sendgrid.json",
     "serviceBus": {
-      "name": "[concat(parameters('avanadeAppEnvironment'),'avanadeworkshopsb')]",
+      "name": "[concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-service-bus')]",
       "defaultSASKeyName": "RootManageSharedAccessKey",
-      "authorizationRulesName": "[concat(parameters('avanadeAppEnvironment'),'avanadeworkshopsb/RootManageSharedAccessKey')]"
+      "authorizationRulesName": "[concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-service-bus/RootManageSharedAccessKey')]"
     },
     "serviceBusTemplateName": "serviceBus.json",
     "storage": {
@@ -79,10 +63,10 @@
       "properties": {
         "mode": "Incremental",
         "parameters": {
-          "name": { "value": "[variables('appService').name]" }
+          "name": { "value": "[variables('appInsightsName')]" }
         },
         "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('appInsightsTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('appInsightsTemplateName'), '?', parameters('_artifactsLocationSasToken'))]",
           "contentVersion": "1.0.0.0"
         }
       },
@@ -97,7 +81,7 @@
           "appServicePlan": { "value": "[variables('appServicePlan')]" }
         },
         "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('appServicePlanTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('appServicePlanTemplateName'), '?', parameters('_artifactsLocationSasToken'))]",
           "contentVersion": "1.0.0.0"
         }
       },
@@ -117,10 +101,10 @@
           "name": { "value": "[variables('azureFunctionName')]" },
           "hostingPlanName": { "value": "[variables('appServicePlan').name]" },
           "storageAccountName": { "value": "[variables('storage').dataName]" },
-          "applicationInsightsName": { "value": "[variables('appService').name]" }
+          "applicationInsightsName": { "value": "[variables('appInsightsName')]" }
         },
         "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('azureFunctionTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('azureFunctionTemplateName'), '?', parameters('_artifactsLocationSasToken'))]",
           "contentVersion": "1.0.0.0"
         }
       },
@@ -155,7 +139,7 @@
               },
               {
                 "name": "serviceBusSharedAccessKeyValue",
-                "value": "PASTE_RootManageSharedAccessKey_HERE"
+                "value": "[reference('serviceBusTemplate').outputs.primaryKey.value]"
               },
               {
                 "name": "Azure.ServiceBus.ReThrowInterval",
@@ -189,132 +173,12 @@
           "serverFarmId": { "value": "[reference('appServicePlanTemplate').outputs.appServicePlanId.value]" }
         },
         "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('appServiceTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('appServiceTemplateName'), '?', parameters('_artifactsLocationSasToken'))]",
           "contentVersion": "1.0.0.0"
         }
       },
       "type": "Microsoft.Resources/deployments"
     },
-    /*   {
-      "apiVersion": "2016-09-01",
-      "name": "schedulerTemplate",
-      "properties": {
-        "mode": "Incremental",
-        "parameters": {
-          "name": { "value": "[variables('scheduler').name]" }
-        },
-        "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('schedulerTemplateName'), parameters('_artifactsLocationSasToken'))]",
-          "contentVersion": "1.0.0.0"
-        }
-      },
-      "type": "Microsoft.Resources/deployments"
-    },
-    {
-      "apiVersion": "2016-09-01",
-      "dependsOn": [
-        "schedulerTemplate",
-        "serviceBusTemplate"
-      ],
-      "name": "schedulerJobTemplate1",
-      "properties": {
-        "mode": "Incremental",
-        "parameters": {
-          "action": {
-            "value": {
-              "serviceBusQueueMessage": {
-                "queueName": "queue1",
-                "namespace": "[variables('serviceBus').name]",
-                "transportType": "NetMessaging",
-                "authentication": {
-                  "sasKeyName": "[variables('serviceBus').defaultSASKeyName]",
-                  "type": "SharedAccessKey",
-                  "sasKey": "[reference('serviceBusTemplate').outputs.primaryKey.value]"
-                },
-                "message": "queue1",
-                "brokeredMessageProperties": {}
-              },
-              "type": "ServiceBusQueue",
-              "retryPolicy": {
-                "retryType": "None"
-              }
-            }
-          },
-          "name": { "value": "[variables('scheduler').jobs.job1Name]" },
-          "recurrence": {
-            "value": {
-              "frequency": "Hour",
-              "interval": 1
-            }
-          }
-        },
-        "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('schedulerJobTemplateName'), parameters('_artifactsLocationSasToken'))]",
-          "contentVersion": "1.0.0.0"
-        }
-      },
-      "type": "Microsoft.Resources/deployments"
-    },
-    {
-      "apiVersion": "2016-09-01",
-      "dependsOn": [
-        "schedulerTemplate",
-        "serviceBusTemplate"
-      ],
-      "name": "schedulerJobTemplate2",
-      "properties": {
-        "mode": "Incremental",
-        "parameters": {
-          "action": {
-            "value": {
-              "serviceBusTopicMessage": {
-                "topicPath": "topic1",
-                "namespace": "[variables('serviceBus').name]",
-                "transportType": "NetMessaging",
-                "authentication": {
-                  "sasKeyName": "[variables('serviceBus').defaultSASKeyName]",
-                  "type": "SharedAccessKey",
-                  "sasKey": "[reference('serviceBusTemplate').outputs.primaryKey.value]"
-                },
-                "message": "topic1",
-                "brokeredMessageProperties": {}
-              },
-              "type": "ServiceBusTopic",
-              "retryPolicy": {
-                "retryType": "None"
-              }
-            }
-          },
-          "name": { "value": "[variables('scheduler').jobs.job2Name]" },
-          "recurrence": {
-            "value": {
-              "frequency": "week",
-              "interval": 1,
-              "schedule": {
-                "minutes": [
-                  0
-                ],
-                "hours": [
-                  13,
-                  14,
-                  15,
-                  16
-                ],
-                "weekDays": [
-                  "monday"
-                ]
-              }
-            }
-          }
-        },
-        "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('schedulerJobTemplateName'), parameters('_artifactsLocationSasToken'))]",
-          "contentVersion": "1.0.0.0"
-        }
-      },
-      "type": "Microsoft.Resources/deployments"
-    },
-*/
     {
       "apiVersion": "2016-09-01",
       "name": "keyVaultTemplateName",
@@ -325,29 +189,29 @@
           "principalId": { "value": "[parameters('principalId')]" }
         },
         "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('keyVaultTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('keyVaultTemplateName'), '?', parameters('_artifactsLocationSasToken'))]",
           "contentVersion": "1.0.0.0"
         }
       },
       "type": "Microsoft.Resources/deployments"
     },
-/*    {
+    {
       "apiVersion": "2016-09-01",
       "name": "sendgridTemplateName",
       "properties": {
         "mode": "Incremental",
         "parameters": {
           "name": { "value": "[variables('sendgridName')]" },
-          "password": { "value": "[parameters('sendgridPassword')]" }
+          "subscriptionId": { "value": "[subscription().subscriptionId]" }
         },
         "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('sendgridTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('sendgridTemplateName'), '?', parameters('_artifactsLocationSasToken'))]",
           "contentVersion": "1.0.0.0"
         }
       },
       "type": "Microsoft.Resources/deployments"
     },
-*/    {
+    {
       "apiVersion": "2016-09-01",
       "name": "serviceBusTemplate",
       "properties": {
@@ -356,7 +220,7 @@
           "serviceBus": { "value": "[variables('serviceBus')]" }
         },
         "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('serviceBusTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('serviceBusTemplateName'), '?', parameters('_artifactsLocationSasToken'))]",
           "contentVersion": "1.0.0.0"
         }
       },
@@ -371,7 +235,7 @@
           "name": { "value": "[variables('storage').dataName]" }
         },
         "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('storageTemplateName'), parameters('_artifactsLocationSasToken'))]",
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('storageTemplateName'), '?', parameters('_artifactsLocationSasToken'))]",
           "contentVersion": "1.0.0.0"
         }
       },

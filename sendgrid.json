@@ -5,28 +5,31 @@
     "name": {
       "type": "string"
     },
-    "password": {
+    "subscriptionId": {
       "type": "string"
     }
   },
   "variables": {
   },
   "resources": [
-    {
+      "type": "Microsoft.SaaS/resources",
+      "apiVersion": "2018-03-01-beta",
       "name": "[parameters('name')]",
-      "type": "Sendgrid.Email/accounts",
-      "location": "[resourceGroup().location]",
-      "apiVersion": "2015-01-01",
-      "plan": {
-        "name": "free",
-        "publisher": "Sendgrid",
-        "product": "sendgrid_azure",
-        "promotionCode": ""
-      },
+      "location": "global",
       "properties": {
-        "password": "[parameters('password')]",
-        "acceptMarketingEmails": "0",
-        "email": ""
+        "saasResourceName": "[parameters('name')]",
+        "publisherId": "sendgrid",
+        "SKUId": "free-100",
+        "offerId": "tsg-saas-offer",
+        "quantity": "1",
+        "termId": "hjdtn7tfnxcy",
+        "autoRenew": true,
+        "paymentChannelType": "SubscriptionDelegated",
+        "paymentChannelMetadata": {
+          "AzureSubscriptionId": "[parameters('subscriptionId')]"
+        },
+        "publisherTestEnvironment": "",
+        "storeFront": "AzurePortal"
       }
     }
   ],
