@@ -1,0 +1,43 @@
+﻿@using Avanade.AzureWorkshop.WebApp.ViewModels
+@model HomePageViewModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>World Cup 2018 Results</h1>
+    <img src="~/Content/Images/world-cup-graphics.jpg" />
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Groups</h2>
+        <div>
+            @foreach(var group in Model.Groups)
+            {
+                <h4>GROUP @group.GroupLetter</h4>
+                <ol>
+                    @foreach(var team in group.Teams)
+                    {
+                        <li class="group-team">
+                            <img src="data: image/png;base64, @team.Flag" />
+                            <span>@Html.ActionLink(team.Name, "Index", new { controller = "Teams", id = team.Id })</span>
+                            <span class="points">Games: @team.Games, Pts: @team.Points</span>
+                        </li>
+                    }
+                </ol>
+				@Ajax.ActionLink("Play Game in group " + group.GroupLetter, "PlayGame", "Home", new { group = group.GroupLetter }, null);
+            }
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h2>Top Scorers</h2>
+        
+            @foreach (var scorer in Model.Scorers)
+            {
+              <p>@scorer.Goals @Html.ActionLink(scorer.FullName, "PlayerDetails", new { controller = "Teams", id = scorer.TeamId, playerId = scorer.PlayerId })</p>
+            }
+        
+    </div>
+</div>
