@@ -12,6 +12,7 @@
   "variables": {
   },
   "resources": [
+    {
       "type": "Microsoft.SaaS/resources",
       "apiVersion": "2018-03-01-beta",
       "name": "[parameters('name')]",
@@ -30,7 +31,7 @@
         },
         "publisherTestEnvironment": "",
         "storeFront": "AzurePortal"
-      }
+	  }
     }
   ],
   "outputs": {
