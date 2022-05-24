@@ -1,4 +1,5 @@
-﻿using Avanade.AzureWorkshop.WebApp.Models.ServiceBusModels;
+﻿using Avanade.AzureWorkshop.WebApp.Models;
+using Avanade.AzureWorkshop.WebApp.Models.ServiceBusModels;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using System;
@@ -18,7 +19,7 @@ namespace Avanade.AzureWorkshop.WebApp.Services
             var scheme = ConfigurationManager.AppSettings["serviceBusScheme"];
             var serviceName = ConfigurationManager.AppSettings["serviceBusServiceName"];
             var sharedAccessKeyName = ConfigurationManager.AppSettings["serviceBusSharedAccessKeyName"];
-            var sharedAccessKeyValue = ConfigurationManager.AppSettings["serviceBusSharedAccessKeyValue"];
+            var sharedAccessKeyValue = GlobalSecrets.ServiceBusAccessKey;
 
             var uri = ServiceBusEnvironment.CreateServiceUri(scheme, serviceName, string.Empty);
             var tokenProvider = TokenProvider.CreateSharedAccessSignatureTokenProvider(sharedAccessKeyName, sharedAccessKeyValue);

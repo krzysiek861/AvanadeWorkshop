@@ -145,6 +145,7 @@ publish/
 # passwords
 #*.pubxml
 *.publishproj
+profile.arm.json
 
 # NuGet Packages
 *.nupkg

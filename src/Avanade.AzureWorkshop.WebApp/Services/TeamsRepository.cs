@@ -1,4 +1,5 @@
-﻿using Avanade.AzureWorkshop.WebApp.Models.TableStorageModels;
+﻿using Avanade.AzureWorkshop.WebApp.Models;
+using Avanade.AzureWorkshop.WebApp.Models.TableStorageModels;
 using Azure;
 using Azure.Data.Tables;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Avanade.AzureWorkshop.WebApp.Services
     {
         private TableServiceClient GetServiceClient()
         {
-            var serviceClient = new TableServiceClient(ConfigurationManager.AppSettings["storageConnectionString"]);
+            var serviceClient = new TableServiceClient(GlobalSecrets.StorageAccountConnectionString);
             return serviceClient;
         }
 

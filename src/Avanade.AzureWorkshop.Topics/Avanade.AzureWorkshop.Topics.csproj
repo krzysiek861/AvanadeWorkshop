@@ -341,6 +341,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DelayedConfigurationSource.cs" />
     <Compile Include="IocConfig.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Functions.cs" />
