@@ -39,6 +39,8 @@
     "appServiceTemplateName": "appService.json",
     "azureFunctionName": "[concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-function-app')]",
     "azureFunctionTemplateName": "azureFunction.json",
+    "bingSearchName": "[concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-bing')]",
+    "bingSearchTemplateName": "bing.json",
     "keyVaultName": "[if(less(length(concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-kv')),24), concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-kv'),substring(concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-kv'),0,if(less(length(concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-kv')),24),length(concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-kv')),23)))]",
     "keyVaultTemplateName": "keyVault.json",
     "resourceGroupName": "[resourceGroup().name]",
@@ -181,12 +183,35 @@
     },
     {
       "apiVersion": "2016-09-01",
+      "name": "bingSearchTemplate",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": {
+          "name": { "value": "[variables('bingSearchName')]" }
+        },
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('bingSearchTemplateName'), '?', parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        }
+      },
+      "type": "Microsoft.Resources/deployments"
+    },
+    {
+      "apiVersion": "2016-09-01",
+      "dependsOn": [
+        "appInsightsTemplate",
+        "appServicePlanTemplate",
+        "serviceBusTemplate",
+        "storageDataTemplate"
+      ],
       "name": "keyVaultTemplateName",
       "properties": {
         "mode": "Incremental",
         "parameters": {
           "name": { "value": "[variables('keyVaultName')]" },
-          "principalId": { "value": "[parameters('principalId')]" }
+          "principalId": { "value": "[parameters('principalId')]" },
+          "serviceBusSharedAccessKeyName": { "value": "[variables('serviceBus').defaultSASKeyName]" },
+          "serviceBusSharedAccessKeyValue": { "value": "[reference('serviceBusTemplate').outputs.primaryKey.value]" }
         },
         "templateLink": {
           "uri": "[concat(parameters('_artifactsLocation'), '/', variables('keyVaultTemplateName'), '?', parameters('_artifactsLocationSasToken'))]",

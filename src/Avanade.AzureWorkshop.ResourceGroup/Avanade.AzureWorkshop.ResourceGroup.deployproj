@@ -29,6 +29,7 @@
     <None Include="appService.json" />
     <None Include="appServicePlan.json" />
     <None Include="azureFunction.json" />
+    <None Include="bing.json" />
     <None Include="deploy.ps1" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>

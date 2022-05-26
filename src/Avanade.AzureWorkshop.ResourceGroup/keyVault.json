@@ -7,6 +7,12 @@
     },
     "principalId": {
       "type": "string"
+    },
+    "serviceBusSharedAccessKeyName": {
+      "type": "string"
+    },
+    "serviceBusSharedAccessKeyValue": {
+      "type": "string"
     }
   },
   "variables": {},
@@ -80,6 +86,30 @@
         "provisioningState": "Succeeded",
         "publicNetworkAccess": "Enabled"
       }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('name'),'/serviceBusSharedAccessKeyName')]",
+      "apiVersion": "2021-06-01-preview",
+      "properties": {
+        "contentType": "text/plain",
+        "value": "[parameters('serviceBusSharedAccessKeyName')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('name'),'/serviceBusSharedAccessKeyValue')]",
+      "apiVersion": "2021-06-01-preview",
+      "properties": {
+        "contentType": "text/plain",
+        "value": "[parameters('serviceBusSharedAccessKeyValue')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('name'))]"
+      ]
     }
   ],
   "outputs": {

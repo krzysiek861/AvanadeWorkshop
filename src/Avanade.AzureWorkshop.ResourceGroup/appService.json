@@ -22,6 +22,9 @@
       "apiVersion": "2016-08-01",
       "location": "[resourceGroup().location]",
       "name": "[parameters('appService').name]",
+	  "identity": {
+		"type": "SystemAssigned"
+      },
       "properties": {
         "clientAffinityEnabled": false,
         "name": "[parameters('appService').name]",
@@ -52,6 +55,7 @@
           "appSettings": "[parameters('appSettings')]",
           "connectionStrings": "[parameters('connectionStrings')]",
           "detailedErrorLoggingEnabled": true,
+		  "keyVaultReferenceIdentity": "SystemAssigned",
           "phpVersion": "",
           "requestTracingEnabled": true,
           "requestTracingExpirationTime": "9999-12-31T23:59:00Z",
