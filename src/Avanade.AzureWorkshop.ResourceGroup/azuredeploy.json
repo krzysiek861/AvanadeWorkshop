@@ -216,7 +216,8 @@
           "bingSearchQueryKey": { "value": "[reference('bingSearchTemplate').outputs.queryKey.value]" },
           "serviceBusSharedAccessKeyName": { "value": "[variables('serviceBus').defaultSASKeyName]" },
           "serviceBusSharedAccessKeyValue": { "value": "[reference('serviceBusTemplate').outputs.primaryKey.value]" },
-          "storageAccountKey": { "value": "[reference('storageDataTemplate').outputs.accountKey.value]" }
+          "storageAccountKey": { "value": "[reference('storageDataTemplate').outputs.accountKey.value]" },
+          "storageConnectionString": { "value": "[reference('storageDataTemplate').outputs.connectionString.value]" }
         },
         "templateLink": {
           "uri": "[concat(parameters('_artifactsLocation'), '/', variables('keyVaultTemplateName'), '?', parameters('_artifactsLocationSasToken'))]",
