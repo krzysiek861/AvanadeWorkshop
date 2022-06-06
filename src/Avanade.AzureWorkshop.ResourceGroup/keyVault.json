@@ -8,10 +8,22 @@
     "principalId": {
       "type": "string"
     },
+    "appInsightsInstrumentationKey": {
+      "type": "string"
+    },
+    "bingSearchPrimaryKey": {
+      "type": "string"
+    },
+    "bingSearchQueryKey": {
+      "type": "string"
+    },
     "serviceBusSharedAccessKeyName": {
       "type": "string"
     },
     "serviceBusSharedAccessKeyValue": {
+      "type": "string"
+    },
+    "storageAccountKey": {
       "type": "string"
     }
   },
@@ -89,6 +101,42 @@
     },
     {
       "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('name'),'/appInsightsInstrumentationKey')]",
+      "apiVersion": "2021-06-01-preview",
+      "properties": {
+        "contentType": "text/plain",
+        "value": "[parameters('appInsightsInstrumentationKey')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('name'),'/bingSearchPrimaryKey')]",
+      "apiVersion": "2021-06-01-preview",
+      "properties": {
+        "contentType": "text/plain",
+        "value": "[parameters('bingSearchPrimaryKey')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('name'),'/bingSearchQueryKey')]",
+      "apiVersion": "2021-06-01-preview",
+      "properties": {
+        "contentType": "text/plain",
+        "value": "[parameters('bingSearchQueryKey')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
       "name": "[concat(parameters('name'),'/serviceBusSharedAccessKeyName')]",
       "apiVersion": "2021-06-01-preview",
       "properties": {
@@ -106,6 +154,18 @@
       "properties": {
         "contentType": "text/plain",
         "value": "[parameters('serviceBusSharedAccessKeyValue')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('name'),'/storageAccountKey')]",
+      "apiVersion": "2021-06-01-preview",
+      "properties": {
+        "contentType": "text/plain",
+        "value": "[parameters('storageAccountKey')]"
       },
       "dependsOn": [
         "[resourceId('Microsoft.KeyVault/vaults', parameters('name'))]"

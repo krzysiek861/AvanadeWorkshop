@@ -25,5 +25,13 @@
     }
   ],
   "outputs": {
+    "primaryKey": {
+      "type": "string",
+      "value": "[listAdminKeys(parameters('name'), '2020-08-01').primaryKey]"
+    },
+    "queryKey": {
+      "type": "string",
+      "value": "[listQueryKeys(parameters('name'), '2020-08-01').value[0].key]"
+    }
   }
 }

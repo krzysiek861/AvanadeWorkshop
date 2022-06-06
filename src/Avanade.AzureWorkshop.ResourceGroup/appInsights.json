@@ -23,7 +23,7 @@
     }
   ],
   "outputs": {
-    "InstrumentationKey": {
+    "instrumentationKey": {
       "type": "string",
       "value": "[reference(concat('microsoft.insights/components/', parameters('name'))).InstrumentationKey]"
     }

@@ -41,7 +41,7 @@
     "azureFunctionTemplateName": "azureFunction.json",
     "bingSearchName": "[concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-bing')]",
     "bingSearchTemplateName": "bing.json",
-    "keyVaultName": "[if(less(length(concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-kv')),24), concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-kv'),substring(concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-kv'),0,if(less(length(concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-kv')),24),length(concat(parameters('avanadeAppEnvironment'),'-avanade-workshop-kv')),23)))]",
+    "keyVaultName": "[if(less(length(concat(parameters('avanadeAppEnvironment'),'avanadekeyvault')),24), concat(parameters('avanadeAppEnvironment'),'avanadekeyvault'),substring(concat(parameters('avanadeAppEnvironment'),'avanadekeyvault'),0,if(less(length(concat(parameters('avanadeAppEnvironment'),'avanadekeyvault')),24),length(concat(parameters('avanadeAppEnvironment'),'avanadekeyvault')),23)))]",
     "keyVaultTemplateName": "keyVault.json",
     "resourceGroupName": "[resourceGroup().name]",
     "resourceId": "[resourceGroup().id]",
@@ -149,7 +149,7 @@
               },
               {
                 "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                "value": "[reference('appInsightsTemplate').outputs.InstrumentationKey.value]"
+                "value": "[reference('appInsightsTemplate').outputs.instrumentationKey.value]"
               }
             ]
           },
@@ -201,6 +201,7 @@
       "dependsOn": [
         "appInsightsTemplate",
         "appServicePlanTemplate",
+        "bingSearchTemplate",
         "serviceBusTemplate",
         "storageDataTemplate"
       ],
@@ -210,8 +211,12 @@
         "parameters": {
           "name": { "value": "[variables('keyVaultName')]" },
           "principalId": { "value": "[parameters('principalId')]" },
+          "appInsightsInstrumentationKey": { "value": "[reference('appInsightsTemplate').outputs.instrumentationKey.value]" },
+          "bingSearchPrimaryKey": { "value": "[reference('bingSearchTemplate').outputs.primaryKey.value]" },
+          "bingSearchQueryKey": { "value": "[reference('bingSearchTemplate').outputs.queryKey.value]" },
           "serviceBusSharedAccessKeyName": { "value": "[variables('serviceBus').defaultSASKeyName]" },
-          "serviceBusSharedAccessKeyValue": { "value": "[reference('serviceBusTemplate').outputs.primaryKey.value]" }
+          "serviceBusSharedAccessKeyValue": { "value": "[reference('serviceBusTemplate').outputs.primaryKey.value]" },
+          "storageAccountKey": { "value": "[reference('storageDataTemplate').outputs.accountKey.value]" }
         },
         "templateLink": {
           "uri": "[concat(parameters('_artifactsLocation'), '/', variables('keyVaultTemplateName'), '?', parameters('_artifactsLocationSasToken'))]",
