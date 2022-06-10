@@ -1,10 +1,6 @@
 ﻿using Avanade.AzureWorkshop.WebApp.BusinessLogic;
 using Avanade.AzureWorkshop.WebApp.Services;
-using Avanade.AzureWorkshop.WebApp.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Avanade.AzureWorkshop.WebApp.Controllers

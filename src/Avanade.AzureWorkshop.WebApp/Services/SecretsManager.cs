@@ -10,34 +10,42 @@ namespace Avanade.AzureWorkshop.WebApp.Services
     {
         public void Initialize()
         {
-            var storageConnStrSecretName = ConfigurationManager.AppSettings["StorageConnStrSecretName"];
-            var serviceBusAccessKeySecretName = ConfigurationManager.AppSettings["ServiceBusAccessKeySecretName"];
-            var serviceBusConnStrSecretName = ConfigurationManager.AppSettings["ServiceBusConnStrSecretName"];
+            var storageConnStr_SecretName = ConfigurationManager.AppSettings["StorageConnStrSecretName"];
+            var serviceBusAccessKey_SecretName = ConfigurationManager.AppSettings["ServiceBusAccessKeySecretName"];
+            var serviceBusConnStr_SecretName = ConfigurationManager.AppSettings["ServiceBusConnStrSecretName"];
+            var serviceBusAccessKeyName_SecretName = ConfigurationManager.AppSettings["serviceBusSharedAccessKeyName"];
+            var sendgridApiKey_SecretName = ConfigurationManager.AppSettings["SendgridApiKeySecretName"];
+            var bingSearchPrimaryKey_SecretName = ConfigurationManager.AppSettings["BingSearchPrimaryKeySecretName"];
 
             var vaultUri = new Uri(ConfigurationManager.AppSettings["KeyVaultUri"]);
             var secretClient = new SecretClient(vaultUri, new DefaultAzureCredential());
 
-            KeyVaultSecret storageConnStrSecret = secretClient.GetSecret(storageConnStrSecretName);
-            GlobalSecrets.StorageAccountConnectionString = storageConnStrSecret.Value;
-            
-            try
-            {
-                KeyVaultSecret serviceBusAccessKeySecret = secretClient.GetSecret(serviceBusAccessKeySecretName);
-                GlobalSecrets.ServiceBusAccessKey = serviceBusAccessKeySecret.Value;
-            }
-            catch (Exception)
-            {
-                GlobalSecrets.ServiceBusAccessKey = null;
-            }
+            GlobalSecrets.StorageAccountConnectionString =
+                GetSecretValueBySecretName(secretClient, storageConnStr_SecretName);
+            GlobalSecrets.ServiceBusAccessKey =
+                GetSecretValueBySecretName(secretClient, serviceBusAccessKey_SecretName);
+            GlobalSecrets.ServiceBusConnectionString =
+                GetSecretValueBySecretName(secretClient, serviceBusConnStr_SecretName);
+            GlobalSecrets.SendgridApiKey =
+                GetSecretValueBySecretName(secretClient, sendgridApiKey_SecretName);
+            GlobalSecrets.BingSearchPrimaryKey =
+                GetSecretValueBySecretName(secretClient, bingSearchPrimaryKey_SecretName);
+            GlobalSecrets.ServiceBusSharedAccessKeyName =
+                GetSecretValueBySecretName(secretClient, serviceBusAccessKeyName_SecretName);
+        }
+
+        private string GetSecretValueBySecretName(SecretClient client, string secretName)
+        {
+            if (string.IsNullOrEmpty(secretName)) return "";
 
             try
             {
-                KeyVaultSecret serviceBusConnStrSecret = secretClient.GetSecret(serviceBusConnStrSecretName);
-                GlobalSecrets.ServiceBusConnectionString = serviceBusConnStrSecret.Value;
+                KeyVaultSecret secret = client.GetSecret(secretName);
+                return secret.Value;
             }
             catch (Exception)
             {
-                GlobalSecrets.ServiceBusConnectionString = null;
+                return "";
             }
         }
     }

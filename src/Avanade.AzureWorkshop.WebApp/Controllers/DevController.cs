@@ -2,10 +2,8 @@
 using Avanade.AzureWorkshop.WebApp.Models.TableStorageModels;
 using Avanade.AzureWorkshop.WebApp.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Avanade.AzureWorkshop.WebApp.Controllers

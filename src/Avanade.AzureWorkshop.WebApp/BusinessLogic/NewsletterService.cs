@@ -5,16 +5,16 @@ namespace Avanade.AzureWorkshop.WebApp.BusinessLogic
 {
     public class NewsletterService
     {
-        private readonly MailgunService _mailgunService;
+        private readonly SendgridService _sendgridService;
 
-        public NewsletterService(MailgunService mailgunService)
+        public NewsletterService(SendgridService sendgridService)
         {
-            _mailgunService = mailgunService;
+            _sendgridService = sendgridService;
         }
 
         public async Task SendNewsletter()
         {
-            await Task.FromResult<object>(_mailgunService.SendEmail());
+            await _sendgridService.SendEmail();
         }
     }
 }
