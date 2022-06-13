@@ -58,7 +58,7 @@ namespace Avanade.AzureWorkshop.WebApp.Services
                     Number = TryParseNullable(columns[1]),
                     FullName = columns[2],
                     Position = columns[3],
-                    DateOfBirth = DateTime.SpecifyKind(DateTime.ParseExact(columns[4], "yyyy-MM-dd", CultureInfo.InvariantCulture), DateTimeKind.Utc),
+                    DateOfBirth = DateTime.SpecifyKind(DateTime.ParseExact(columns[4], "M/d/yyyy", CultureInfo.InvariantCulture), DateTimeKind.Utc),
                     Club = columns[5]
                 };
             }

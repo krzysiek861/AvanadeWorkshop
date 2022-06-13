@@ -34,7 +34,8 @@ namespace Avanade.AzureWorkshop.WebApp.Controllers
             {
                 RedirectToAction("Index", "Home");
             }
-            return View(_playersService.GetPlayerDetails(id, playerId));
+            var playerDetails = _playersService.GetPlayerDetails(id, playerId);
+            return View(playerDetails);
         }
     }
 }

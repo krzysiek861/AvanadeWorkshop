@@ -55,6 +55,14 @@ namespace Avanade.AzureWorkshop.WebApp.BusinessLogic
             };
         }
 
+        public PlayerDetails GetRandomPlayerDetails()
+        {
+            var (teamId, playerId) = _teamsRepository.GetRandomPlayer();
+            var player = GetPlayerDetails(teamId, playerId);
+
+            return player;
+        }
+
         private List<string> GetPlayerImages(string fullName, string playerId, string teamId)
         {
             if (_binaryFilesRepository.AnyFileExists(teamId, playerId))
@@ -63,14 +71,16 @@ namespace Avanade.AzureWorkshop.WebApp.BusinessLogic
             }
 
             var images = _imagesService.SearchForImages(fullName).ToList();
+            var imageURIs = new List<string>();
 
             foreach(var image in images)
             {
                 byte[] data = _imagesService.DownloadImage(image);
-                _binaryFilesRepository.SaveBlob(teamId, playerId, data);
+                var uri = _binaryFilesRepository.SaveBlob(teamId, playerId, data);
+                imageURIs.Add(uri);
             }
 
-            return images;
+            return imageURIs;
         }
     }
 }

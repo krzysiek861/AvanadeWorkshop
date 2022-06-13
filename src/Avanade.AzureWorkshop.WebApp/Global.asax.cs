@@ -16,8 +16,8 @@ namespace Avanade.AzureWorkshop.WebApp
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            RegisterDependencies();
             InitializeSecrets();
+            RegisterDependencies();
         }
 
         protected void RegisterDependencies()

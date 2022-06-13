@@ -2,6 +2,7 @@
 using Avanade.AzureWorkshop.WebApp.Models.TableStorageModels;
 using Azure;
 using Azure.Data.Tables;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -143,6 +144,24 @@ namespace Avanade.AzureWorkshop.WebApp.Services
 
             var result = table.Query<PlayerEntity>(p => p.Goals > 0).OrderByDescending(f => f.Goals);
             return result;
+        }
+
+        public (string teamId, string playerId) GetRandomPlayer()
+        {
+            var random = new Random();
+            var tableClient = GetServiceClient();
+            var teamsTable = tableClient.GetTableClient("teams");
+            var playersTable = tableClient.GetTableClient("players");
+
+            var teamNames = teamsTable.Query<TeamEntity>().Select(t => t.RowKey);
+            var teamIndex = random.Next(teamNames.Count());
+            var randomTeam = teamNames.ElementAt(teamIndex);
+
+            var playerIds = playersTable.Query<PlayerEntity>(p => p.PartitionKey == randomTeam).Select(p => p.RowKey);
+            var playerIndex = random.Next(playerIds.Count());
+            var randomPlayer = playerIds.ElementAt(playerIndex);
+
+            return (randomTeam, randomPlayer);
         }
     }
 }

@@ -1,13 +1,10 @@
-﻿using System;
+﻿using Avanade.AzureWorkshop.WebApp.Models;
+using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace Avanade.AzureWorkshop.WebApp.Services
 {
@@ -16,7 +13,7 @@ namespace Avanade.AzureWorkshop.WebApp.Services
         const string pattern = "\"contentUrl\": \"(.*?)\"";
         const int maxMatches = 3;
 
-        private string accessKey = ConfigurationManager.AppSettings["bingImagesSearchKey"];
+        private string accessKey = GlobalSecrets.BingSearchPrimaryKey;
         const string uriBase = @"https://api.bing.microsoft.com/v7.0/images/search";
 
         public IEnumerable<string> SearchForImages(string searchQuery)

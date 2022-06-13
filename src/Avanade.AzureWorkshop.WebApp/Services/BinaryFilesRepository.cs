@@ -1,4 +1,5 @@
-﻿using Azure.Storage.Blobs;
+﻿using Avanade.AzureWorkshop.WebApp.Models;
+using Azure.Storage.Blobs;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,7 +14,7 @@ namespace Avanade.AzureWorkshop.WebApp.Services
     {
         private BlobServiceClient GetBlobserviceClient()
         {
-            var serviceClient = new BlobServiceClient(ConfigurationManager.AppSettings["storageConnectionString"]);
+            var serviceClient = new BlobServiceClient(GlobalSecrets.StorageAccountConnectionString);
             return serviceClient;
         }
 
@@ -25,7 +26,7 @@ namespace Avanade.AzureWorkshop.WebApp.Services
             return blobContainerClient.Exists();
         }
 
-        public void SaveBlob(string containerName, string fileName, byte[] bytes)
+        public string SaveBlob(string containerName, string fileName, byte[] bytes)
         {
             var serviceClient = GetBlobserviceClient();
             var container = $"{containerName}-{fileName}".ToLower();
@@ -36,6 +37,7 @@ namespace Avanade.AzureWorkshop.WebApp.Services
             using (var stream = new MemoryStream(bytes, writable: false))
             {
                 blobClient.Upload(stream);
+                return blobClient.Uri.AbsoluteUri;
             }          
         }
 
