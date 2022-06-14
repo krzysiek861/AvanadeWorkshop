@@ -17,8 +17,8 @@ namespace Avanade.AzureWorkshop.WebApp.Services
         public TopicService(TelemetryService telemetryService)
         {
             var scheme = ConfigurationManager.AppSettings["serviceBusScheme"];
-            var serviceName = ConfigurationManager.AppSettings["serviceBusServiceName"];
-            var sharedAccessKeyName = ConfigurationManager.AppSettings["serviceBusSharedAccessKeyName"];
+            var serviceName = GlobalSecrets.ServiceBusServiceName;
+            var sharedAccessKeyName = GlobalSecrets.ServiceBusSharedAccessKeyName;
             var sharedAccessKeyValue = GlobalSecrets.ServiceBusAccessKey;
 
             var uri = ServiceBusEnvironment.CreateServiceUri(scheme, serviceName, string.Empty);

@@ -1,10 +1,7 @@
 ﻿using Avanade.AzureWorkshop.WebApp.Services;
 using Avanade.AzureWorkshop.WebApp.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace Avanade.AzureWorkshop.WebApp.BusinessLogic
 {

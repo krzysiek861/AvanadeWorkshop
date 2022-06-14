@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 
 namespace Avanade.AzureWorkshop.WebApp.Models.ServiceBusModels
 {

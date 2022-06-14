@@ -13,9 +13,10 @@ namespace Avanade.AzureWorkshop.WebApp.Services
             var storageConnStr_SecretName = ConfigurationManager.AppSettings["StorageConnStrSecretName"];
             var serviceBusAccessKey_SecretName = ConfigurationManager.AppSettings["ServiceBusAccessKeySecretName"];
             var serviceBusConnStr_SecretName = ConfigurationManager.AppSettings["ServiceBusConnStrSecretName"];
-            var serviceBusAccessKeyName_SecretName = ConfigurationManager.AppSettings["serviceBusSharedAccessKeyName"];
+            var serviceBusAccessKeyName_SecretName = ConfigurationManager.AppSettings["ServiceBusSharedAccessKeyNameSecretName"];
             var sendgridApiKey_SecretName = ConfigurationManager.AppSettings["SendgridApiKeySecretName"];
             var bingSearchPrimaryKey_SecretName = ConfigurationManager.AppSettings["BingSearchPrimaryKeySecretName"];
+            var serviceBusServiceName_SecretName = ConfigurationManager.AppSettings["ServiceBusServiceNameSecretName"];
 
             var vaultUri = new Uri(ConfigurationManager.AppSettings["KeyVaultUri"]);
             var secretClient = new SecretClient(vaultUri, new DefaultAzureCredential());
@@ -32,6 +33,8 @@ namespace Avanade.AzureWorkshop.WebApp.Services
                 GetSecretValueBySecretName(secretClient, bingSearchPrimaryKey_SecretName);
             GlobalSecrets.ServiceBusSharedAccessKeyName =
                 GetSecretValueBySecretName(secretClient, serviceBusAccessKeyName_SecretName);
+            GlobalSecrets.ServiceBusServiceName = 
+                GetSecretValueBySecretName(secretClient, serviceBusServiceName_SecretName);
         }
 
         private string GetSecretValueBySecretName(SecretClient client, string secretName)
