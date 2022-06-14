@@ -200,6 +200,7 @@
       "apiVersion": "2016-09-01",
       "dependsOn": [
         "appInsightsTemplate",
+        "appServiceTemplate",
         "appServicePlanTemplate",
         "bingSearchTemplate",
         "serviceBusTemplate",
@@ -211,9 +212,11 @@
         "parameters": {
           "name": { "value": "[variables('keyVaultName')]" },
           "principalId": { "value": "[parameters('principalId')]" },
+          "appServiceName": { "value": "[variables('appService').name]" },
           "appInsightsInstrumentationKey": { "value": "[reference('appInsightsTemplate').outputs.instrumentationKey.value]" },
           "bingSearchPrimaryKey": { "value": "[reference('bingSearchTemplate').outputs.primaryKey.value]" },
           "bingSearchQueryKey": { "value": "[reference('bingSearchTemplate').outputs.queryKey.value]" },
+          "serviceBusServiceName": { "value": "[variables('serviceBus').name]" },
           "serviceBusSharedAccessKeyName": { "value": "[variables('serviceBus').defaultSASKeyName]" },
           "serviceBusSharedAccessKeyValue": { "value": "[reference('serviceBusTemplate').outputs.primaryKey.value]" },
           "storageAccountKey": { "value": "[reference('storageDataTemplate').outputs.accountKey.value]" },

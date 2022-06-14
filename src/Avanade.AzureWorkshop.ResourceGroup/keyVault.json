@@ -8,6 +8,9 @@
     "principalId": {
       "type": "string"
     },
+    "appServiceName": {
+      "type": "string"
+    },
     "appInsightsInstrumentationKey": {
       "type": "string"
     },
@@ -15,6 +18,9 @@
       "type": "string"
     },
     "bingSearchQueryKey": {
+      "type": "string"
+    },
+    "serviceBusServiceName": {
       "type": "string"
     },
     "serviceBusSharedAccessKeyName": {
@@ -44,6 +50,24 @@
         },
         "tenantId": "[subscription().tenantId]",
         "accessPolicies": [
+          {
+            "tenantId": "[subscription().tenantId]",
+            "objectId": "[reference(resourceId('Microsoft.Web/sites', parameters('appServiceName')), '2019-08-01', 'full').identity.principalId]",
+            "permissions": {
+              "keys": [],
+              "secrets": [
+                "Get",
+                "List",
+                "Set",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "Purge"
+              ],
+              "certificates": []
+            }
+          },
           {
             "tenantId": "[subscription().tenantId]",
             "objectId": "[parameters('principalId')]",
@@ -133,6 +157,18 @@
       "properties": {
         "contentType": "text/plain",
         "value": "[parameters('bingSearchQueryKey')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('name'),'/serviceBusServiceName')]",
+      "apiVersion": "2021-06-01-preview",
+      "properties": {
+        "contentType": "text/plain",
+        "value": "[parameters('serviceBusServiceName')]"
       },
       "dependsOn": [
         "[resourceId('Microsoft.KeyVault/vaults', parameters('name'))]"
