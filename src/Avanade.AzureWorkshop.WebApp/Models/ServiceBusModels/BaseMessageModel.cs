@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace Avanade.AzureWorkshop.WebApp.Models.ServiceBusModels
+﻿namespace Avanade.AzureWorkshop.WebApp.Models.ServiceBusModels
 {
     public class BaseMessageModel
     {

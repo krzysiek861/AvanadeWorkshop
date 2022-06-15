@@ -6,6 +6,7 @@
         public static string ServiceBusAccessKey;
         public static string ServiceBusConnectionString;
         public static string ServiceBusSharedAccessKeyName;
+        public static string ServiceBusServiceName;
         public static string SendgridApiKey;
         public static string BingSearchPrimaryKey;
     }

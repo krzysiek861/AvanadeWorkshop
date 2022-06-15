@@ -1,5 +1,4 @@
 ﻿using Avanade.AzureWorkshop.WebApp.Filters;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Avanade.AzureWorkshop.WebApp
