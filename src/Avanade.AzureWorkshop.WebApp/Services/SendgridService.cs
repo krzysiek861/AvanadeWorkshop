@@ -21,11 +21,12 @@ namespace Avanade.AzureWorkshop.WebApp.Services
         {
             var apiKey = GlobalSecrets.SendgridApiKey;
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("mateusz.kruk@avanade.com", "Mateusz Kruk");
-            var to = new EmailAddress("mateusz.kruk@windowslive.com", "Mateusz Kruk");
+            var from = new EmailAddress("from@example.com", "From Name");
+            var to = new EmailAddress("to@example.com", "To Name");
+            var templateId = "";
 
             var playerDetails = _playersService.GetRandomPlayerDetails();
-            var msg = MailHelper.CreateSingleTemplateEmail(from, to, "d-4a3b06128b414dd1a4e1b047e0b33241",
+            var msg = MailHelper.CreateSingleTemplateEmail(from, to, templateId,
                 new
                 {
                     fullName = playerDetails.FullName,

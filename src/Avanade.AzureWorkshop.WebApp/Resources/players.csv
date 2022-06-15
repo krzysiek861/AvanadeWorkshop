@@ -329,6 +329,28 @@ USA,,Timothy Weah,FW,2/22/2000,Lille
 USA,,Brenden Aaronson,FW,10/22/2000,Red Bull Salzburg
 USA,,Jesús Ferreira,FW,12/24/2000,FC Dallas
 USA,,Haji Wright,FW,3/27/1998,Antalyaspor
+Wales,1,Wayne Hennessey,GK,1/24/1987,Burnley F.C.
+Wales,21,Adam Davies,GK,7/7/1992,Sheffield United F.C.
+Wales,12,Tom King,GK,3/9/1995,Salford City F.C.
+Wales,2,Chris Gunter,DF,7/21/1989,Charlton Athletic F.C.
+Wales,4,Ben Davies,DF,4/24/1993,Tottenham Hotspur F.C.
+Wales,14,Connor Roberts,DF,9/23/1995,Burnley F.C.
+Wales,15,Ethan Ampadu,DF,9/14/2000,Venezia F.C.
+Wales,5,Chris Mepham,DF,11/5/1997,AFC Bournemouth
+Wales,6,Joe Rodon,DF,10/22/1997,Tottenham Hotspur F.C.
+Wales,3,Oliver Denham,DF,5/4/2002,Cardiff City F.C.
+Wales,10,Aaron Ramsey,MF,12/26/1990,Rangers F.C.
+Wales,8,Harry Wilson,MF,3/22/1997,Fulham F.C.
+Wales,18,Jonny Williams,MF,10/9/1993,Swindon Town F.C.
+Wales,16,Matthew Smith,MF,11/22/1999,Milton Keynes Dons F.C.
+Wales,9,Brennan Johnson,MF,5/23/2001,Nottingham Forest F.C.
+Wales,7,Dylan Levitt,MF,11/17/2000,Dundee United F.C.
+Wales,22,Sorba Thomas,MF,1/25/1999,Huddersfield Town A.F.C.
+Wales,23,Wes Burns,MF,11/23/1994,Ipswich Town F.C.
+Wales,11,Gareth Bale,FW,7/16/1989,Real Madrid C.F.
+Wales,20,Daniel James,FW,11/10/1997,Leeds United F.C.
+Wales,17,Rabbi Matondo,FW,9/9/2000,Cercle Brugge K.S.V.
+Wales,19,Mark Harris,FW,12/29/1998,Cardiff City F.C.
 France,1,Alphonse Areola,GK,2/27/1993,Paris Saint-Germain
 France,16,Steve Mandanda,GK,3/28/1985,Marseille
 France,23,Benoît Costil,GK,7/3/1987,Bordeaux
@@ -352,34 +374,29 @@ France,11,Kingsley Coman,FW,6/13/1996,Bayern Munich
 France,12,Kylian Mbappé,FW,12/20/1998,Paris Saint-Germain
 France,13,Florian Thauvin,FW,1/26/1993,Marseille
 France,20,Anthony Martial,FW,12/5/1995,Manchester United
-Peru,,Pedro Gallese,GK,2/23/1990,Orlando City
-Peru,,José Carvallo,GK,3/1/1986,Universitario
-Peru,,Ángelo Campos,GK,4/27/1993,Alianza Lima
-Peru,,Luis Advíncula,DF,3/2/1990,Boca Juniors
-Peru,,Christian Ramos,DF,11/4/1988,Alianza Lima
-Peru,,Miguel Trauco,DF,8/25/1992,Saint-Étienne
-Peru,,Carlos Zambrano,DF,7/10/1989,Boca Juniors
-Peru,,Aldo Corzo,DF,5/20/1989,Universitario
-Peru,,Luis Abram,DF,2/27/1996,Cruz Azul
-Peru,,Alexander Callens,DF,5/4/1992,New York City FC
-Peru,,Miguel Araujo,DF,10/24/1994,FC Emmen
-Peru,,Marcos López,DF,11/20/1999,San Jose Earthquakes
-Peru,,Yoshimar Yotún,MF,4/7/1990,Sporting Cristal
-Peru,,Christian Cueva,MF,11/23/1991,Al-Fateh
-Peru,,André Carrillo,MF,6/14/1991,Al-Hilal
-Peru,,Renato Tapia,MF,7/28/1995,Celta Vigo
-Peru,,Edison Flores,MF,5/15/1994,D.C. United
-Peru,,Christofer Gonzáles,MF,10/12/1992,Sporting Cristal
-Peru,,Pedro Aquino,MF,4/13/1995,Club América
-Peru,,Sergio Peña,MF,9/28/1995,Malmö FF
-Peru,,Wilder Cartagena,MF,9/23/1994,Al-Ittihad Kalba SC
-Peru,,Gabriel Costa,MF,4/2/1990,Colo-Colo
-Peru,,Horacio Calcaterra,MF,2/22/1989,Sporting Cristal
-Peru,,Raziel García,MF,2/15/1994,Club Deportes Tolima
-Peru,,Jairo Concha,MF,5/27/1999,Alianza Lima
-Peru,,Gianluca Lapadula,FW,2/7/1990,Benevento
-Peru,,Santiago Ormeño,FW,2/4/1994,Club León
-Peru,,Alex Valera,FW,5/16/1996,Universitario
+Australia,1,Mathew Ryan,GK,4/8/1992,Real Sociedad
+Australia,12,Andrew Redmayne,GK,1/13/1989,Sydney FC
+Australia,18,Danny Vukovic,GK,3/27/1985,NEC Nijmegen
+Australia,2,Milos Degenek,DF,4/28/1994,Columbus Crew
+Australia,3,Fran Karačić,DF,5/12/1996,Brescia Calcio
+Australia,4,Nathaniel Atkinson,DF,6/13/1999,Heart of Midlothian F.C.
+Australia,8,Bailey Wright,DF,7/28/1992,Sunderland A.F.C.
+Australia,16,Aziz Behich,DF,10/16/1990,Giresunspor
+Australia,17,Kye Rowles,DF,6/24/1998,Heart of Midlothian F.C.
+Australia,20,Trent Sainsbury,DF,1/5/1992,K.V. Kortrijk
+Australia,5,Denis Genreau,MF,5/21/1999,Toulouse FC
+Australia,10,Ajdin Hrustic,MF,7/5/1996,Eintracht Frankfurt
+Australia,13,Aaron Mooy,MF,9/15/1990,Shanghai Port F.C.
+Australia,14,Riley McGree,MF,11/2/1998,Middlesbrough F.C.
+Australia,19,Craig Goodwin,MF,12/16/1991,Adelaide United FC
+Australia,22,Jackson Irvine,MF,3/7/1993,FC St. Pauli
+Australia,6,Martin Boyle,FW,4/25/1993,Al Faisaly FC
+Australia,7,Mathew Leckie,FW,2/4/1991,Melbourne City FC
+Australia,9,Jamie Maclaren,FW,7/29/1993,Melbourne City FC
+Australia,11,Awer Mabil,FW,9/15/1995,Cádiz CF|Cádiz CF
+Australia,15,Mitchell Duke,FW,1/18/1991,Fagiano Okayama
+Australia,21,Marco Tilio,FW,8/23/2001,Melbourne City FC
+Australia,23,Nicholas D'Agostino,FW,2/25/1998,Melbourne Victory FC
 Denmark,1,Kasper Schmeichel,GK,11/5/1986,Leicester City
 Denmark,16,Jonas Lössl,GK,2/1/1989,Huddersfield Town
 Denmark,22,Frederik Rønnow,GK,8/4/1992,Brøndby

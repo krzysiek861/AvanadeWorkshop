@@ -13,7 +13,10 @@ namespace Avanade.AzureWorkshop.Topics
             var builder = new ContainerBuilder();
 
             builder.RegisterType<GamesService>();
+            builder.RegisterType<PlayersService>();
             builder.RegisterType<TeamsRepository>();
+            builder.RegisterType<ImagesService>();
+            builder.RegisterType<BinaryFilesRepository>();
             builder.RegisterType<SendgridService>();
             builder.RegisterType<NewsletterService>();
             builder.RegisterType<TelemetryService>();
