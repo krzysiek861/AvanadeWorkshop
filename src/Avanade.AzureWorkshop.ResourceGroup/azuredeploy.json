@@ -216,6 +216,7 @@
           "appInsightsInstrumentationKey": { "value": "[reference('appInsightsTemplate').outputs.instrumentationKey.value]" },
           "bingSearchPrimaryKey": { "value": "[reference('bingSearchTemplate').outputs.primaryKey.value]" },
           "bingSearchQueryKey": { "value": "[reference('bingSearchTemplate').outputs.queryKey.value]" },
+          "serviceBusConnectionString": { "value": "[reference('serviceBusTemplate').outputs.primaryConnectionString.value]" },
           "serviceBusServiceName": { "value": "[variables('serviceBus').name]" },
           "serviceBusSharedAccessKeyName": { "value": "[variables('serviceBus').defaultSASKeyName]" },
           "serviceBusSharedAccessKeyValue": { "value": "[reference('serviceBusTemplate').outputs.primaryKey.value]" },

@@ -10,28 +10,27 @@
   },
   "resources": [
     {
-      "type": "Microsoft.Search/searchServices",
-      "apiVersion": "2020-08-01",
+      "type": "Microsoft.Bing/accounts",
+      "apiVersion": "2020-06-10",
       "name": "[parameters('name')]",
-      "location": "[resourceGroup().location]",
+      "location": "global",
       "sku": {
-        "name": "free"
+        "name": "F1"
       },
+      "kind": "Bing.Search.v7",
       "properties": {
-        "replicaCount": "1",
-        "partitionCount": "1",
-        "hostingMode": "default"
+        "statisticsEnabled": false
       }
     }
   ],
   "outputs": {
     "primaryKey": {
       "type": "string",
-      "value": "[listAdminKeys(parameters('name'), '2020-08-01').primaryKey]"
+      "value": "[listKeys(parameters('name'), '2020-06-10').key1]"
     },
     "queryKey": {
       "type": "string",
-      "value": "[listQueryKeys(parameters('name'), '2020-08-01').value[0].key]"
+      "value": "[listKeys(parameters('name'), '2020-06-10').key2]"
     }
   }
 }

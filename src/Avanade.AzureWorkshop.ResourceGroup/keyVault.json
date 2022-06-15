@@ -20,6 +20,9 @@
     "bingSearchQueryKey": {
       "type": "string"
     },
+    "serviceBusConnectionString": {
+      "type": "string"
+    },
     "serviceBusServiceName": {
       "type": "string"
     },
@@ -169,6 +172,18 @@
       "properties": {
         "contentType": "text/plain",
         "value": "[parameters('serviceBusServiceName')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(parameters('name'),'/serviceBusConnectionString')]",
+      "apiVersion": "2021-06-01-preview",
+      "properties": {
+        "contentType": "text/plain",
+        "value": "[parameters('serviceBusConnectionString')]"
       },
       "dependsOn": [
         "[resourceId('Microsoft.KeyVault/vaults', parameters('name'))]"
