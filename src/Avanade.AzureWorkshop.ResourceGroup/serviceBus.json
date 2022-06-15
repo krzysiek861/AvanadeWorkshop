@@ -7,6 +7,12 @@
     }
   },
   "variables": {
+    "gamesTopicName": "gamemessagemodel",
+    "gamesTopicNestedName": "[concat(parameters('serviceBus').name, '/gamemessagemodel')]",
+    "gamesSubscriptionName": "[concat(parameters('serviceBus').name, '/gamemessagemodel/webjobssubscription')]",
+    "newsletterTopicName": "newsletter",
+    "newsletterTopicNestedName": "[concat(parameters('serviceBus').name, '/newsletter')]",
+    "newsletterSubscriptionName": "[concat(parameters('serviceBus').name, '/newsletter/webjobssubscription')]"
   },
   "resources": [
     {
@@ -38,6 +44,54 @@
         ]
       },
       "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules"
+    },
+    {
+      "apiVersion": "2017-04-01",
+      "name": "[variables('gamesTopicNestedName')]",
+      "type": "Microsoft.ServiceBus/namespaces/topics",
+      "dependsOn": [
+        "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBus').name)]"
+      ],
+      "properties": {
+        "path": "[variables('gamesTopicNestedName')]"
+      },
+      "resources": [
+        {
+          "apiVersion": "2017-04-01",
+          "name": "[variables('gamesSubscriptionName')]",
+          "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+          "dependsOn": [
+            "[variables('gamesTopicName')]"
+          ],
+          "properties": {
+            "maxDeliveryCount": 3
+          }
+        }
+      ]
+    },
+    {
+      "apiVersion": "2017-04-01",
+      "name": "[variables('newsletterTopicNestedName')]",
+      "type": "Microsoft.ServiceBus/namespaces/topics",
+      "dependsOn": [
+        "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBus').name)]"
+      ],
+      "properties": {
+        "path": "[variables('newsletterTopicNestedName')]"
+      },
+      "resources": [
+        {
+          "apiVersion": "2017-04-01",
+          "name": "[variables('newsletterSubscriptionName')]",
+          "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+          "dependsOn": [
+            "[variables('newsletterTopicName')]"
+          ],
+          "properties": {
+            "maxDeliveryCount": 3
+          }
+        }
+      ]
     }
   ],
   "outputs": {
