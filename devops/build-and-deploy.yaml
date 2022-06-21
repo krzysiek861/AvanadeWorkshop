@@ -1,0 +1,21 @@
+trigger:
+  branches:
+    include:
+      - feature/ado-pipelines
+
+pool:
+  vmImage: "windows-latest"
+
+stages:
+  - stage: build an app
+    jobs:
+      - job:
+        displayName: Build
+        steps:
+        - script: echo building an app
+  - stage: deploy an app
+    jobs:
+      - job:
+        displayName: Deploy
+        steps:
+          - script: echo deploying an app
