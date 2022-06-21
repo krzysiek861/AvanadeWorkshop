@@ -55,7 +55,7 @@ namespace Avanade.AzureWorkshop.WebApp.Controllers
 
         private TeamEntity MapTeam(Team team)
         {
-            return new TeamEntity(2018.ToString(), team.Name.Replace(" ", ""))
+            return new TeamEntity(2022.ToString(), team.Name.Replace(" ", ""))
             {
                 Flag = team.Flag,
                 Name = team.Name,
