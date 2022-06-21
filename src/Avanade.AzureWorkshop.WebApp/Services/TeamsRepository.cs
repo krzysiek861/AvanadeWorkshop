@@ -42,36 +42,12 @@ namespace Avanade.AzureWorkshop.WebApp.Services
 
         public async Task StoreTeams(IEnumerable<TeamEntity> teams)
         {
-            var tableClient = GetServiceClient();
-            var table = tableClient.GetTableClient("teams");
-            await table.CreateIfNotExistsAsync();
-
-            var transactionActions = new List<TableTransactionAction>();
-
-            foreach (var team in teams)
-            {
-                transactionActions.Add(new TableTransactionAction(TableTransactionActionType.UpdateReplace, team));
-            }
-
-            await table.SubmitTransactionAsync(transactionActions);
+            throw new NotImplementedException();
         }
 
         public async Task StorePlayers(IEnumerable<PlayerEntity> players)
         {
-            var tableClient = GetServiceClient();
-            var table = tableClient.GetTableClient("players");
-
-            await table.CreateIfNotExistsAsync();            
-
-            foreach (var group in players.GroupBy(p => p.PartitionKey))
-            {
-                var transactionActions = new List<TableTransactionAction>();
-                foreach (var player in group)
-                {
-                    transactionActions.Add(new TableTransactionAction(TableTransactionActionType.Add, player));
-                }
-                await table.SubmitTransactionAsync(transactionActions);
-            }            
+            throw new NotImplementedException();
         }
 
         public async Task StoreGame(GameEntity game)
@@ -104,9 +80,7 @@ namespace Avanade.AzureWorkshop.WebApp.Services
 
         public IEnumerable<TeamEntity> FetchTeams()
         {
-            var tableClient = GetServiceClient();
-            var table = tableClient.GetTableClient("teams");
-            return table.Query<TeamEntity>().OrderBy(f => f.Group);
+            throw new NotImplementedException();
         }
 
         public IEnumerable<TeamEntity> FetchTeamsByGroup(string group)
@@ -120,11 +94,7 @@ namespace Avanade.AzureWorkshop.WebApp.Services
 
         public IEnumerable<PlayerEntity> FetchPlayers(string teamId)
         {
-            var tableClient = GetServiceClient();
-            var table = tableClient.GetTableClient("players");
-
-            var result = table.Query<PlayerEntity>(p => p.PartitionKey == teamId).OrderBy(f => f.Number);
-            return result;
+            throw new NotImplementedException();
         }
 
         public PlayerEntity FetchSinglePlayer(string teamId, string playerId)

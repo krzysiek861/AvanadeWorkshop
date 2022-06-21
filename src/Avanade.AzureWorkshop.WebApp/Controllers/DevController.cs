@@ -41,26 +41,14 @@ namespace Avanade.AzureWorkshop.WebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        private PlayerEntity MapPlayer(Player player)
+        private dynamic MapPlayer(Player player)
         {
-            return new PlayerEntity(player.TeamId, Guid.NewGuid().ToString())
-            {
-                Club = player.Club,
-                DateOfBirth = player.DateOfBirth,
-                Number = player.Number,
-                Position = player.Position,
-                FullName = player.FullName
-            };
+            throw new NotImplementedException();
         }
 
-        private TeamEntity MapTeam(Team team)
+        private dynamic MapTeam(Team team)
         {
-            return new TeamEntity(2022.ToString(), team.Name.Replace(" ", ""))
-            {
-                Flag = team.Flag,
-                Name = team.Name,
-                Group = team.Group.ToString()
-            };
+            throw new NotImplementedException();
         }
     }
 }
