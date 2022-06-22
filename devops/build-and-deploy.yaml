@@ -7,13 +7,13 @@ pool:
   vmImage: "windows-latest"
 
 stages:
-  - stage: build an app
+  - stage: build_an_app
     jobs:
       - job:
         displayName: Build
         steps:
         - script: echo building an app
-  - stage: deploy an app
+  - stage: deploy_an_app
     jobs:
       - job:
         displayName: Deploy
