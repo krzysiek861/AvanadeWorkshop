@@ -14,7 +14,6 @@ namespace Avanade.AzureWorkshop.Topics
     public class Functions
     {
         private const string SubscriptionName = "webjobssubscription";
-        private const string NewsletterTriggerName = "Newsletter";
 
         public async Task ProcessGameMessage([ServiceBusTrigger(nameof(GameMessageModel), SubscriptionName, Connection = "AzureWebJobsServiceBus")] GameMessageModel message, TextWriter textWriter)
         {
@@ -25,15 +24,6 @@ namespace Avanade.AzureWorkshop.Topics
                 await gamesService.SaveGameResult(message);
                 await WriteMessage(message.CorrelationId, textWriter);
                 telemetryService.Log("Succesfully saved game result", message.CorrelationId);
-            });
-        }
-
-        public async Task ProcessNewsletter([ServiceBusTrigger(NewsletterTriggerName, SubscriptionName, Connection = "AzureWebJobsServiceBus")] ServiceBusReceivedMessage message, TextWriter textWriter)
-        {
-            await ProcessMessage(textWriter, new BaseMessageModel(), async (scope, model) =>
-            {
-                var newsletterService = scope.Resolve<NewsletterService>();
-                await newsletterService.SendNewsletter();
             });
         }
 

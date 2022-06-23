@@ -30,7 +30,6 @@ namespace Avanade.AzureWorkshop.WebApp
             builder.RegisterType<TeamsService>();
             builder.RegisterType<PlayersService>();
             builder.RegisterType<SendgridService>();
-            builder.RegisterType<NewsletterService>();
             builder.RegisterType<TeamsRepository>();
             builder.RegisterType<ImagesService>();
             builder.RegisterType<BinaryFilesRepository>();
