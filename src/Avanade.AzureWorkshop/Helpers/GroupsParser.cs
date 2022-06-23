@@ -13,7 +13,7 @@ namespace Avanade.AzureWorkshop.Helpers
     {
         public static void Run()
         {
-            var groupsUrl = @"https://en.wikipedia.org/wiki/2018_FIFA_World_Cup";
+            var groupsUrl = @"https://en.wikipedia.org/wiki/2022_FIFA_World_Cup";
             HtmlWeb web = new HtmlWeb();
             HtmlDocument doc = web.Load(groupsUrl);
 
