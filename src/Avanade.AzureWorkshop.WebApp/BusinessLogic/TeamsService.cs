@@ -28,33 +28,11 @@ namespace Avanade.AzureWorkshop.WebApp.BusinessLogic
 
         public HomePageViewModel GetHomePageData()
         {
-            var groups = _teamsRepository.FetchTeams().GroupBy(x => x.Group);
-            var scorers = _teamsRepository.FetchScorers();
-
-            var vm = new HomePageViewModel()
+            return new HomePageViewModel()
             {
-                Groups = groups.Select(g => new GroupViewModel()
-                {
-                    GroupLetter = Convert.ToChar(g.Key),
-                    Teams = g.Select(t =>
-                    new GroupTeamViewModel() {
-                        Flag = t.Flag,
-                        Games = t.Games,
-                        Name = t.Name,
-                        Points = t.Points
-                    }).OrderByDescending(x => x.Points).ToList()
-                }).ToList(),
-                Scorers = scorers.Select(x => new ScorersViewModel
-                {
-                    Goals = x.Goals,
-                    FullName = x.FullName,
-                    PlayerId = x.RowKey,
-                    TeamId = x.TeamId
-                }).ToList()
+                Groups = new List<GroupViewModel>(),
+                Scorers = new List<ScorersViewModel>()
             };
-
-
-            return vm;
         }
 
         public void PlayGame(string group, string correlationId)
@@ -97,7 +75,7 @@ namespace Avanade.AzureWorkshop.WebApp.BusinessLogic
             _topicService.SendMessage(gameMessageModel);
         }
 
-        public string DrawOpponent(string hostTeam, IList<TeamEntity> teams, IList<GameEntity> games)
+        public string DrawOpponent(string hostTeam, IList<dynamic> teams, IList<GameEntity> games)
         {
             foreach (var teamEntity in teams)
             {
@@ -111,7 +89,7 @@ namespace Avanade.AzureWorkshop.WebApp.BusinessLogic
             throw new Exception($"Opponent for team {hostTeam} not found!");
         }
 
-        public IEnumerable<string> DrawScorers(IList<PlayerEntity> players, int goals)
+        public IEnumerable<string> DrawScorers(IList<dynamic> players, int goals)
         {
             var scorers = new List<string>();
 

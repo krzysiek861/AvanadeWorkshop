@@ -32,12 +32,6 @@ namespace Avanade.AzureWorkshop.WebApp.Controllers
 
         public async Task<ActionResult> FillStorage()
         {
-            var players = _csvReader.ReadPlayers();
-            var teams = _csvReader.ReadTeams();
-
-            await _teamsRepository.StoreTeams(teams.Select(MapTeam));
-            await _teamsRepository.StorePlayers(players.Select(MapPlayer));
-
             return RedirectToAction("Index");
         }
 

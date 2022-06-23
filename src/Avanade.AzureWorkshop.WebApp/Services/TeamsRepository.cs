@@ -17,7 +17,7 @@ namespace Avanade.AzureWorkshop.WebApp.Services
             return serviceClient;
         }
 
-        public void UpdateTeam(TeamEntity team)
+        public void UpdateTeam(dynamic team)
         {
             var tableClient = GetServiceClient();
             var table = tableClient.GetTableClient("teams");
@@ -25,7 +25,7 @@ namespace Avanade.AzureWorkshop.WebApp.Services
             table.UpdateEntity(team, ETag.All, TableUpdateMode.Replace);
         }
 
-        public void UpdatePlayers(IEnumerable<PlayerEntity> players)
+        public void UpdatePlayers(IEnumerable<dynamic> players)
         {
             var tableClient = GetServiceClient();
             var table = tableClient.GetTableClient("players");
@@ -40,12 +40,12 @@ namespace Avanade.AzureWorkshop.WebApp.Services
             table.SubmitTransaction(transactionActions);
         }
 
-        public async Task StoreTeams(IEnumerable<TeamEntity> teams)
+        public async Task StoreTeams(IEnumerable<dynamic> teams)
         {
             throw new NotImplementedException();
         }
 
-        public async Task StorePlayers(IEnumerable<PlayerEntity> players)
+        public async Task StorePlayers(IEnumerable<dynamic> players)
         {
             throw new NotImplementedException();
         }
@@ -69,68 +69,39 @@ namespace Avanade.AzureWorkshop.WebApp.Services
             return result;
         }
 
-        public TeamEntity FetchTeam(string teamName)
-        {
-            var tableClient = GetServiceClient();
-            var table = tableClient.GetTableClient("teams");
-
-            var result = table.Query<TeamEntity>(t => t.Name == teamName).FirstOrDefault();
-            return result;
-        }
-
-        public IEnumerable<TeamEntity> FetchTeams()
+        public dynamic FetchTeam(string teamName)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<TeamEntity> FetchTeamsByGroup(string group)
-        {
-            var tableClient = GetServiceClient();
-            var table = tableClient.GetTableClient("teams");
-
-            var result = table.Query<TeamEntity>(t => t.Group == group).OrderBy(f => f.Name);
-            return result;
-        }
-
-        public IEnumerable<PlayerEntity> FetchPlayers(string teamId)
+        public IEnumerable<dynamic> FetchTeams()
         {
             throw new NotImplementedException();
         }
 
-        public PlayerEntity FetchSinglePlayer(string teamId, string playerId)
+        public IEnumerable<dynamic> FetchTeamsByGroup(string group)
         {
-            var tableClient = GetServiceClient();
-            var table = tableClient.GetTableClient("players");
-
-            var player = table.GetEntity<PlayerEntity>(teamId, playerId);
-            return player.Value;
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<PlayerEntity> FetchScorers()
+        public IEnumerable<dynamic> FetchPlayers(string teamId)
         {
-            var tableClient = GetServiceClient();
-            var table = tableClient.GetTableClient("players");
+            throw new NotImplementedException();
+        }
 
-            var result = table.Query<PlayerEntity>(p => p.Goals > 0).OrderByDescending(f => f.Goals);
-            return result;
+        public dynamic FetchSinglePlayer(string teamId, string playerId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<dynamic> FetchScorers()
+        {
+            throw new NotImplementedException();
         }
 
         public (string teamId, string playerId) GetRandomPlayer()
         {
-            var random = new Random();
-            var tableClient = GetServiceClient();
-            var teamsTable = tableClient.GetTableClient("teams");
-            var playersTable = tableClient.GetTableClient("players");
-
-            var teamNames = teamsTable.Query<TeamEntity>().Select(t => t.RowKey);
-            var teamIndex = random.Next(teamNames.Count());
-            var randomTeam = teamNames.ElementAt(teamIndex);
-
-            var playerIds = playersTable.Query<PlayerEntity>(p => p.PartitionKey == randomTeam).Select(p => p.RowKey);
-            var playerIndex = random.Next(playerIds.Count());
-            var randomPlayer = playerIds.ElementAt(playerIndex);
-
-            return (randomTeam, randomPlayer);
+            throw new NotImplementedException();
         }
     }
 }
