@@ -18,7 +18,6 @@ namespace Avanade.AzureWorkshop.Topics
             builder.RegisterType<ImagesService>();
             builder.RegisterType<BinaryFilesRepository>();
             builder.RegisterType<SendgridService>();
-            builder.RegisterType<NewsletterService>();
             builder.RegisterType<TelemetryService>();
 
             _container = builder.Build();
