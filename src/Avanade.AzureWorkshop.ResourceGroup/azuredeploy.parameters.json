@@ -4,6 +4,6 @@
   "parameters": {
     "avanadeAppEnvironment": {
       "value": "xyz"
-    },
+    }
   }
 }
