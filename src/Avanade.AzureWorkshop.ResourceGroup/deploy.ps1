@@ -10,7 +10,7 @@ Param(
     [switch] $ValidateOnly
 )
 
-$ObjectId = az ad signed-in-user show --query objectId --out tsv
+$ObjectId = az ad signed-in-user show --query id --out tsv
 $SubscriptionId = az account show --query id --out tsv
 
 $StorageResourceGroupName = 'ARM_Deploy_Staging'
@@ -47,7 +47,7 @@ if ($UploadArtifacts) {
 	az role assignment create --role "Storage Blob Data Contributor" --assignee $ObjectId --scope "/subscriptions/$SubscriptionId/resourceGroups/$StorageResourceGroupName/providers/Microsoft.Storage/storageAccounts/$StorageAccountName"
 	az storage container create --account-name $StorageAccountName --name $StorageContainerName --auth-mode login
 
-	$ArtifactFilePaths = Get-ChildItem $ArtifactStagingDirectory -Recurse -File | ForEach-Object -Process {$_.FullName}
+	$ArtifactFilePaths = Get-ChildItem $ArtifactStagingDirectory -Recurse -File -Include *.json | ForEach-Object -Process {$_.FullName}
     foreach ($SourcePath in $ArtifactFilePaths) {
 		az storage blob upload --account-name $StorageAccountName --container-name $StorageContainerName --name $SourcePath.Substring($ArtifactStagingDirectory.length + 1) --file $SourcePath --auth-mode login --overwrite true
 	}
